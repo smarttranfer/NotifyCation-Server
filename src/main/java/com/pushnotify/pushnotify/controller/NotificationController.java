@@ -1,15 +1,21 @@
 package com.pushnotify.pushnotify.controller;
 
+import Map_config.map_json;
 import com.pushnotify.pushnotify.dto.NotificationRequestDto;
 import com.pushnotify.pushnotify.dto.SubscriptionRequestDto;
 import com.pushnotify.pushnotify.service.NotificationService;
 import com.pushnotify.pushnotify.service.ServiceToken;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.FileReader;
+import java.util.List;
 
 @RestController
 @RequestMapping("/notification")
@@ -31,22 +37,25 @@ public class NotificationController {
         notificationService.unsubscribeFromTopic(subscriptionRequestDto);
     }
 
+
     @PostMapping(value = "/Pushnotify", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> sendPns(@RequestBody NotificationRequestDto notificationRequestDto) throws JSONException {
-        String resuslts = "";
-        System.out.println(notificationRequestDto);
+    public Object sendPns(@RequestBody List<NotificationRequestDto> notificationRequestDto) throws JSONException {
         try {
-            for (String i : notificationRequestDto.getUser()) {
-                for (String token : servicetoken.getoken_client(i)) {
-                    String resuslt = notificationService.sendPnsToDevice(notificationRequestDto, token);
-                    resuslts = resuslt;
+            for(NotificationRequestDto notificationRequestDtos : notificationRequestDto){
+                for(String user : notificationRequestDtos.getUser()){
+                    for(String token : servicetoken.getoken_client(user)){
+                        JSONObject ob = new JSONObject(map_json.jsons);
+                        String firstName = ob.getString(notificationRequestDtos.getType());
+                        notificationService.sendPnsToDevice(notificationRequestDtos,token,firstName);
+                    }
                 }
+
             }
-            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"200\", \"Content\":\"%s\"}", resuslts));
+            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"200\", \"Content\":\"%s\"}", "send messenger sucessfull"));
             return ResponseEntity.ok(resultNode.toString());
         } catch (Exception e) {
-            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", e));
-            return ResponseEntity.ok(resultNode.toString());
+            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", "send messenger unsucessfull"));
+            return ResponseEntity.badRequest();
         }
     }
 
@@ -63,8 +72,8 @@ public class NotificationController {
 
 
         } catch (Exception e) {
-            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", e));
-            return ResponseEntity.ok(resultNode.toString());
+            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", "Update token broken"));
+            return (ResponseEntity<?>) ResponseEntity.badRequest();
         }
 
     }

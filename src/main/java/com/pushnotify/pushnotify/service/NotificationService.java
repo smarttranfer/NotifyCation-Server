@@ -18,8 +18,6 @@ import java.io.IOException;
 @Service
 public class NotificationService {
 
-
-
     @Value("${app.firebase-config}")
     private String firebaseConfig;
 
@@ -59,42 +57,47 @@ public class NotificationService {
         }
     }
 
-    public String sendPnsToDevice(NotificationRequestDto notificationRequestDto , String Token) {
-        AndroidNotification androidNofi = AndroidNotification.builder()
-                .setSound("default")
-                .build();
-
-        Message message = Message.builder()
-                .setAndroidConfig(AndroidConfig.builder()
-                        .setTtl(3600 * 1000)
-                        .setNotification(AndroidNotification.builder()
-                                .setColor("#D9AFD9")
-                                .setTitle("BKAV Information")
-                                .setSound(String.valueOf(androidNofi))
-                                .build())
-                        .build())
-                .setToken(Token)
-                .setNotification(new Notification("CMSM INFORMATION " , "   Domain :"+ notificationRequestDto.getDomain()+"\n"+"   EventTime :" + notificationRequestDto.getEventtime() + "\n" +  "   Content :" + notificationRequestDto.getContent() + "\n" + "   Level :" + notificationRequestDto.getLevel()))
-                .putData("content", notificationRequestDto.getDomain())
-                .putData("body", (notificationRequestDto.getContent()))
-                .build();
-
-        String response = null;
+    public String sendPnsToDevice(NotificationRequestDto notificationRequestDto, String Token,String name_type) {
         try {
-            response = FirebaseMessaging.getInstance().send(message);
-        } catch (FirebaseMessagingException e) {
-            log.error("Fail to send firebase notification", e);
+            AndroidNotification androidNofi = AndroidNotification.builder()
+                    .setSound("default")
+                    .build();
+
+            Message message = Message.builder()
+                    .setAndroidConfig(AndroidConfig.builder()
+                            .setTtl(3600 * 1000)
+                            .setNotification(AndroidNotification.builder()
+                                    .setColor("#D9AFD9")
+                                    .setTitle("BKAV Information")
+                                    .setSound(String.valueOf(androidNofi))
+                                    .build())
+                            .build())
+                    .setToken(Token)
+                    .setNotification(new Notification("CMSM INFORMATION ", String.format("[%s] Camera %d \n sent a message", name_type, notificationRequestDto.getVmsCameraId())))
+                    .putData("content", notificationRequestDto.getDomain())
+                    .build();
+
+            String response = null;
+            try {
+                response = FirebaseMessaging.getInstance().send(message);
+            } catch (FirebaseMessagingException e) {
+                log.error("Fail to send firebase notification", e);
+
+            }
+            return response;
+        } catch (Exception e) {
+            return "send messenger sucessfull";
 
         }
-        return response;
+
     }
 
     public String sendPnsToTopic(NotificationRequestDto notificationRequestDto) {
         Message message = Message.builder()
                 .setTopic(notificationRequestDto.getDomain())
-                .setNotification(new Notification(notificationRequestDto.getDomain(), notificationRequestDto.getContent()))
+//                .setNotification(new Notification(notificationRequestDto.getDomain(), notificationRequestDto.getContent()))
                 .putData("content", notificationRequestDto.getDomain())
-                .putData("body", notificationRequestDto.getContent())
+//                .putData("body", notificationRequestDto.getContent())
                 .build();
 
         String response = null;

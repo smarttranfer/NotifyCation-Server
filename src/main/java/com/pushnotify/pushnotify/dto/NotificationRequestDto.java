@@ -8,13 +8,13 @@ public class NotificationRequestDto {
     private String text;
     private String vmsCameraId;
     private String updatedAt;
-    private String level;
-    private String duration;
+    private int level;
+    private int duration;
     private String type;
-    private String detected;
-    private String id;
+    private boolean detected;
     private String createdAt;
     private List<String> user;
+    private int id;
 
     public String getDomain() {
         return domain;
@@ -48,19 +48,19 @@ public class NotificationRequestDto {
         this.updatedAt = updatedAt;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
@@ -72,19 +72,19 @@ public class NotificationRequestDto {
         this.type = type;
     }
 
-    public String getDetected() {
+    public boolean isDetected() {
         return detected;
     }
 
-    public void setDetected(String detected) {
+    public void setDetected(boolean detected) {
         this.detected = detected;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -103,6 +103,10 @@ public class NotificationRequestDto {
     public void setUser(List<String> user) {
         this.user = user;
     }
+
+
+
+
 
 
 }
