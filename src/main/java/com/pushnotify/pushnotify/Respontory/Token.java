@@ -11,21 +11,23 @@ import java.util.List;
 @Repository
 public interface Token extends CrudRepository<TokenEntity,Integer> {
     @Modifying
-    @Query(value = "INSERT INTO tb_token (token,status) VALUES (:tokens,1)",nativeQuery = true)
+    @Query(value = "INSERT INTO tb_token (token,status,user) VALUES (:tokens,1,:user)",nativeQuery = true)
     @Transactional
-    void insertToken(@Param("tokens") String tokens);
+    void insertToken(@Param("tokens") String tokens,@Param("user") String user);
 
 
-    @Query(value = "select  tk.token from  tb_token tk where tk.status=1",nativeQuery = true)
-    List<String> gettken();
+    @Query(value = "select  tk.token from  tb_token tk where tk.status=1 and tk.user = :user",nativeQuery = true)
+    List<String> gettken(@Param("user")String user);
 
 
     @Modifying
-    @Query(value = "INSERT INTO tb_token (token,status) VALUES (:token,0)",nativeQuery = true)
+    @Query(value = "INSERT INTO tb_token (token,status,user) VALUES (:token,0,:user)",nativeQuery = true)
     @Transactional
-    void DeleteToken(@Param("token")String token);
+    void DeleteToken(@Param("token")String token,@Param("user")String user);
 
-
+//    @Modifying
+//    @Query(value = "update tb_token N set N.status = 0 where N.token = ?1",nativeQuery = true)
+//    void DeleteToken(String Dtoken);
 
 
 

@@ -14,9 +14,9 @@ public class ServiceToken {
     @Autowired
     private Token Tokennode;
 
-    public boolean Settoken(String token_client){
+    public boolean Settoken(String token_client,String user){
         try{
-            Tokennode.insertToken(token_client);
+            Tokennode.insertToken(token_client,user);
             return true;
         }catch (Exception e){
             System.out.println(e);
@@ -25,14 +25,14 @@ public class ServiceToken {
 
     }
 
-    public List<String> getoken_client(){
-            return Tokennode.gettken();
+    public List<String> getoken_client(String user){
+            return Tokennode.gettken(user);
 
     }
 
-    public boolean deteleToken(String Dtoken){
+    public boolean deteleToken(String Dtoken,String user){
         try {
-           Tokennode.DeleteToken(Dtoken);
+           Tokennode.DeleteToken(Dtoken,user);
             return true;
         }catch (Exception e){
             System.out.println(e);

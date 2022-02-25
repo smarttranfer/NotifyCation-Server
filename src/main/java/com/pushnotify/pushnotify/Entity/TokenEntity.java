@@ -23,4 +23,7 @@ public class TokenEntity {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "user")
+    private String user;
 }

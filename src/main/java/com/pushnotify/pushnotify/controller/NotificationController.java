@@ -31,58 +31,58 @@ public class NotificationController {
         notificationService.unsubscribeFromTopic(subscriptionRequestDto);
     }
 
-    @PostMapping(value = "/Pushnotify",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/Pushnotify", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> sendPns(@RequestBody NotificationRequestDto notificationRequestDto) throws JSONException {
         String resuslts = "";
-        try{
-            for(String token :servicetoken.getoken_client()){
-                String resuslt = notificationService.sendPnsToDevice(notificationRequestDto,token);
-                resuslts = resuslt;
+        System.out.println(notificationRequestDto);
+        try {
+            for (String i : notificationRequestDto.getUser()) {
+                for (String token : servicetoken.getoken_client(i)) {
+                    String resuslt = notificationService.sendPnsToDevice(notificationRequestDto, token);
+                    resuslts = resuslt;
+                }
             }
-            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"200\", \"Content\":\"%s\"}",resuslts ));
+            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"200\", \"Content\":\"%s\"}", resuslts));
             return ResponseEntity.ok(resultNode.toString());
-
-
-        }catch (Exception e){
-            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}",e ));
+        } catch (Exception e) {
+            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", e));
             return ResponseEntity.ok(resultNode.toString());
         }
     }
 
-    @PostMapping(value = "/UpdateToken",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> GetTokens(@RequestParam String token) throws JSONException {
-        try{
-            if( servicetoken.Settoken(token) == true){
-                JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"200\", \"Content\":\"%s\"}","Update token succesfull" ));
+    @PostMapping(value = "/UpdateToken", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> GetTokens(@RequestParam String token, @RequestParam String user) throws JSONException {
+        try {
+            if (servicetoken.Settoken(token, user) == true) {
+                JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"200\", \"Content\":\"%s\"}", "Update token succesfull"));
                 return ResponseEntity.ok(resultNode.toString());
-            }else {
-                JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}","Update token broken" ));
+            } else {
+                JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", "Update token broken"));
                 return ResponseEntity.ok(resultNode.toString());
             }
 
 
-        }catch (Exception e){
-            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}",e ));
+        } catch (Exception e) {
+            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", e));
             return ResponseEntity.ok(resultNode.toString());
         }
 
     }
 
-
-    @PostMapping(value = "/DeleteToken",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> Delete(@RequestParam String token) throws JSONException {
-        try{
-            if( servicetoken.deteleToken(token) == true){
-                JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"200\", \"Content\":\"%s\"}","Update token succesfull" ));
+    @PostMapping(value = "/DeleteToken", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> Delete(@RequestParam String token, @RequestParam String user) throws JSONException {
+        try {
+            if (servicetoken.deteleToken(token, user) == true) {
+                JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"200\", \"Content\":\"%s\"}", "Update token succesfull"));
                 return ResponseEntity.ok(resultNode.toString());
-            }else {
-                JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}","Update token broken" ));
+            } else {
+                JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", "Update token broken"));
                 return ResponseEntity.ok(resultNode.toString());
             }
 
 
-        }catch (Exception e){
-            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}",e ));
+        } catch (Exception e) {
+            JSONObject resultNode = new JSONObject(String.format("{\"Status\":\"Fail\", \"Content\":\"%s\"}", e));
             return ResponseEntity.ok(resultNode.toString());
         }
 

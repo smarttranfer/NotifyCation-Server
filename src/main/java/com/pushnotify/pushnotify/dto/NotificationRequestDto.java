@@ -5,8 +5,16 @@ import java.util.List;
 //@Data
 public class NotificationRequestDto {
     private String domain;
-    private String content;
-    private String eventtype;
+    private String text;
+    private String vmsCameraId;
+    private String updatedAt;
+    private String level;
+    private String duration;
+    private String type;
+    private String detected;
+    private String id;
+    private String createdAt;
+    private List<String> user;
 
     public String getDomain() {
         return domain;
@@ -16,28 +24,28 @@ public class NotificationRequestDto {
         this.domain = domain;
     }
 
-    public String getContent() {
-        return content;
+    public String getText() {
+        return text;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getEventtype() {
-        return eventtype;
+    public String getVmsCameraId() {
+        return vmsCameraId;
     }
 
-    public void setEventtype(String eventtype) {
-        this.eventtype = eventtype;
+    public void setVmsCameraId(String vmsCameraId) {
+        this.vmsCameraId = vmsCameraId;
     }
 
-    public String getEventtime() {
-        return eventtime;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setEventtime(String eventtime) {
-        this.eventtime = eventtime;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getLevel() {
@@ -48,15 +56,53 @@ public class NotificationRequestDto {
         this.level = level;
     }
 
-    public List<String> getUserid() {
-        return userid;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setUserid(List<String> userid) {
-        this.userid = userid;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
-    private String eventtime;
-    private String level;
-    private List<String> userid;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDetected() {
+        return detected;
+    }
+
+    public void setDetected(String detected) {
+        this.detected = detected;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<String> getUser() {
+        return user;
+    }
+
+    public void setUser(List<String> user) {
+        this.user = user;
+    }
+
+
 }

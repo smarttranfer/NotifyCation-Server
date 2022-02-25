@@ -21,11 +21,6 @@ public class NotificationService {
 
 
     @Value("${app.firebase-config}")
-    public void setFirebaseConfig(String firebaseConfig) {
-        String Path = "C:\\Users\\DucVNv\\Desktop\\ProjectBKAV\\bakvcms-firebase-adminsdk-61m8f-e1513a68fa.json";
-        this.firebaseConfig = Path;
-    }
-
     private String firebaseConfig;
 
     private FirebaseApp firebaseApp;
@@ -65,7 +60,6 @@ public class NotificationService {
     }
 
     public String sendPnsToDevice(NotificationRequestDto notificationRequestDto , String Token) {
-
         AndroidNotification androidNofi = AndroidNotification.builder()
                 .setSound("default")
                 .build();
