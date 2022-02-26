@@ -58,11 +58,11 @@ public class NotificationService {
     }
 
     public String sendPnsToDevice(NotificationRequestDto notificationRequestDto, String Token,String name_type) {
-        try {
-            AndroidNotification androidNofi = AndroidNotification.builder()
+
+        try{
+            AndroidNotification androidNofi  = AndroidNotification.builder()
                     .setSound("default")
                     .build();
-
             Message message = Message.builder()
                     .setAndroidConfig(AndroidConfig.builder()
                             .setTtl(3600 * 1000)
@@ -73,8 +73,9 @@ public class NotificationService {
                                     .build())
                             .build())
                     .setToken(Token)
-                    .setNotification(new Notification("CMSM INFORMATION ", String.format("[%s] Camera %d \n sent a message", name_type, notificationRequestDto.getVmsCameraId())))
+                    .setNotification(new Notification("CMSM INFORMATION ", String.format("[%s] Camera %s \n sent a message", name_type, notificationRequestDto.getVmsCameraId().toString())))
                     .putData("content", notificationRequestDto.getDomain())
+                    .putData("body", (notificationRequestDto.getDomain()))
                     .build();
 
             String response = null;
@@ -85,10 +86,12 @@ public class NotificationService {
 
             }
             return response;
-        } catch (Exception e) {
-            return "send messenger sucessfull";
 
+
+        }catch (Exception e){
+            return "send messenger unsucessfull";
         }
+
 
     }
 
